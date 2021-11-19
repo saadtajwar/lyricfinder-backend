@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const url = `mongodb+srv://fullstackopen:windmere33@cluster0.hes6b.mongodb.net/lyricfinder?retryWrites=true&w=majority`;
+const url = `mongodb+srv://fullstackopen:${process.env.MONGODB_PASS}@cluster0.hes6b.mongodb.net/lyricfinder?retryWrites=true&w=majority`;
 console.log('Connecting to', url);
 
 mongoose.connect(url).then(result => {

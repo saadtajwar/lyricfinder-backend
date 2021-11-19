@@ -25,9 +25,7 @@ app.post('/api/users', async (request, response) => {
     }
 })
 
-console.log(process.env.PORT);
-
-const PORT = 8008;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log('Connected to', PORT);
 })
