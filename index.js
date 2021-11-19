@@ -3,6 +3,7 @@ const app = express();
 app.use(express.json());
 const cors = require('cors');
 app.use(cors());
+require('dotenv').config()
 const User = require('./models/user')
 
 app.get('/', (request, response) => {
@@ -23,6 +24,8 @@ app.post('/api/users', async (request, response) => {
         response.status(500).json(error);
     }
 })
+
+console.log(process.env.PORT);
 
 const PORT = 8008;
 app.listen(PORT, () => {
