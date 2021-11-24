@@ -11,6 +11,21 @@ app.get('/', (request, response) => {
     response.send('Ping');
 })
 
+app.post('/api/login', async (request, response) => {
+    try {
+        const body = request.body;
+        const foundUser = await User.findOne({username: body.username});
+        if (!foundUser || foundUser.password !== body.password) {
+            return response.status(401).json({error: 'Incorrect credentials'})
+        }
+
+        response.json(foundUser);
+
+    } catch (error) {
+        response.status(500).json(error);
+    }
+})
+
 app.post('/api/users', async (request, response) => {
     try {
         const body = request.body;
