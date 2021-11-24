@@ -10,38 +10,25 @@ mongoose.connect(url).then(result => {
     console.log(`error`);
 })
 
-const userSchema = new mongoose.Schema({
-    username: {
+const songSchema = new mongoose.Schema({
+    track_name: {
         type: String,
         required: true,
-        minLength: 3,
+    },
+    commontrack_id: {
+        type: String,
+        required: true,
         unique: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true,
-        minLength: 6
-    },
-    songs: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Song'
-        }
-    ]
+    }
 })
 
-userSchema.set('toJSON', {
+songSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
         delete returnedObject._id
         delete returnedObject.__v
-        delete returnedObject.password
     }
 })
 
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+const Song = mongoose.model('Song', songSchema);
+module.exports = Song;

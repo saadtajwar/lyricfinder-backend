@@ -5,6 +5,7 @@ const cors = require('cors');
 app.use(cors());
 require('dotenv').config()
 const User = require('./models/user')
+const Song = require('./models/song')
 
 app.get('/', (request, response) => {
     response.send('Ping');
@@ -25,6 +26,45 @@ app.post('/api/users', async (request, response) => {
     }
 })
 
+app.get('/api/users', async (request, response) => {
+    try {
+        const body = request.body;
+        const users = await User.find({}).populate('songs', {track_name: 1, commontrack_id: 1});
+        response.json(users);
+    } catch (error) {
+        response.status(500).json(error);
+    }
+})
+
+app.post('/api/songs', async (request, response) => {
+    try {
+        const body = request.body;
+        const user = await User.findById(body.userId);
+
+        const newSong = new Song({
+            commontrack_id: body.commontrack_id,
+            track_name: body.track_name
+        })
+
+        const savedSong = await newSong.save();
+        user.songs = user.songs.concat(savedSong);
+        await user.save();
+        response.json(savedSong);
+
+    } catch (error) {
+        response.status(500).json(error);
+    }
+})
+
+app.get('/api/songs', async (request, response) => {
+    try {
+        const songs = await Song.find({});
+        response.json(songs);
+    } catch (error) {
+        response.status(500).json(error);
+    }
+})
+
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log('Connected to', PORT);
@@ -35,5 +75,5 @@ app.listen(PORT, () => {
 TODO:
 Make User schema - username, password
 Make "song" schema and populate it in the user
-
+track_name and commontrack_id
 */
