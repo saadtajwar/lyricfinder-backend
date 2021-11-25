@@ -28,8 +28,9 @@ const userSchema = new mongoose.Schema({
     },
     songs: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Song'
+            _id: false,
+            commontrack_id: String,
+            track_name: String,
         }
     ]
 })

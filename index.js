@@ -56,15 +56,14 @@ app.post('/api/songs', async (request, response) => {
         const body = request.body;
         const user = await User.findById(body.userId);
 
-        const newSong = new Song({
+        const newSong = {
             commontrack_id: body.commontrack_id,
             track_name: body.track_name
-        })
+        };
 
-        const savedSong = await newSong.save();
-        user.songs = user.songs.concat(savedSong);
-        await user.save();
-        response.json(savedSong);
+        user.songs = user.songs.concat(newSong);
+        const newUser = await user.save();
+        response.json(newUser);
 
     } catch (error) {
         response.status(500).json(error);
